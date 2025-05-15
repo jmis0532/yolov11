@@ -18,7 +18,7 @@ YOLOv11n
 
 建立虛擬環境後，記得要啟用虛擬環境才能開始使用程式，在CMD下	venv001\Scripts\activate.bat 啟用虛擬環境。
 
-3.把以下東西拷貝到目錄下 (請參照目錄圖001.jpg)
+3.把以下東西複製到目錄下 (請參照目錄圖001.jpg)
 
 (1)requirements.txt
 
