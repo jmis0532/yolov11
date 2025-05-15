@@ -69,18 +69,27 @@ venv001這資料夾是在CMD下，使用python -m venv venv001 建立的虛擬�
 及data.yaml內容如下
 
 train: H:\github\yolo11\yolo11_test\train\images
+
 val: H:\github\yolo11\yolo11_test\valid\images
+
 test: H:\github\yolo11\yolo11_test\test\images
+
 
 nc: 1
 names: ['RC']
 
 roboflow:
+
   workspace: summer-jyu2t
+
   project: yolo10_test-61exz
+
   version: 1
+
   license: CC BY 4.0
+
   url: https://universe.roboflow.com/summer-jyu2t/yolo10_test-61exz/dataset/1
+
 
 
 
