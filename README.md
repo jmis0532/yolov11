@@ -66,7 +66,7 @@ venv001這資料夾是在CMD下，使用python -m venv venv001 建立的虛擬�
 
 內有test，train，valid 三個資料夾，各有images(圖片)及label(標註資料) 
 
-及data.yaml內容須修改如下(自行修正路徑)
+及data.yaml路徑須修改如下(自行修正路徑)
 
 train: H:\github\yolo11\yolo11_test\train\images
 
@@ -88,7 +88,7 @@ roboflow:
 
   license: CC BY 4.0
 
-  url: https://universe.roboflow.com/summer-jyu2t/yolo10_test-61exz/dataset/1
+  url: 
 
 
 
