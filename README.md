@@ -24,5 +24,6 @@ YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
 4.執行安裝 pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
 
+  vedio11-detect.py (開啟本地影像進行偵測，使用YOLOv11n原始模型)
 
 
