@@ -16,7 +16,7 @@ requirements.txt
 
 packages <==打包好的套件包
 
-六支程式  
+六支.py程式  
 
 YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
