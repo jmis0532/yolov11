@@ -90,6 +90,29 @@ roboflow:
 
   url: 
 
+============================================
+
+CMD下訓練指令(虛擬環境啟動中)
+
+yolo detect train data=yolo10_test/data.yaml model=yolo11n.pt epochs=30 batch=8 imgsz=640 device=0
+
+
+data(自行修正路徑)
+
+
+model=yolo11n.pt(訓練模型)
+
+
+epochs=30(訓練週期)
+
+
+batch=8(訓練批次)
+
+
+imgsz=640(圖像大小)
+
+
+device=0 (顯卡單張為0，顯卡兩張為1....)
 
 
 
