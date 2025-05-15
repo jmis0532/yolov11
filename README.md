@@ -36,17 +36,17 @@ YOLOv11n
 
 程式說明：
 
-  vedio11-detect.py (開啟本地影像進行偵測，使用YOLOv11n原始模型)
+  vedio11-detect.py (開啟本地影像進行偵測，使用YOLOv11n原始模型，記得修正路徑)
 
-  vediobest-detect.py (開啟本地影像進行偵測，使用訓練過後模型)
+  vediobest-detect.py (開啟本地影像進行偵測，使用訓練過後模型，記得修正路徑)
 
-  vediocut.py (開啟本地影像進行截圖，存檔於output_images資料夾，按S)
+  vediocut.py (開啟本地影像進行截圖，存檔於output_images資料夾，按S，記得修正路徑)
 
-  webcan11-detect.py (開啟攝影鏡頭進行偵測，使用YOLOv11n原始模型)
+  webcan11-detect.py (開啟攝影鏡頭進行偵測，使用YOLOv11n原始模型，記得修正路徑)
 
-  webcanbest-detect.py (開啟攝影鏡頭進行偵測，使用訓練過後模型)
+  webcanbest-detect.py (開啟攝影鏡頭進行偵測，使用訓練過後模型，記得修正路徑)
 
-  webcancut.py (開啟攝影鏡頭進行截圖，存檔於output_images資料夾，按S)
+  webcancut.py (開啟攝影鏡頭進行截圖，存檔於output_images資料夾，按S，記得修正路徑)
 
 ============================================
 
