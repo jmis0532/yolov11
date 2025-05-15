@@ -28,12 +28,12 @@ YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
   vediobest-detect.py (開啟本地影像進行偵測，使用訓練過後模型)
 
-  vediocut.py (開啟本地影像進行截圖，存檔於output_images資料夾)
+  vediocut.py (開啟本地影像進行截圖，存檔於output_images資料夾，按S)
 
   webcan11-detect.py (開啟攝影鏡頭進行偵測，使用YOLOv11n原始模型)
 
   webcanbest-detect.py (開啟攝影鏡頭進行偵測，使用訓練過後模型)
 
-  webcancut.py (開啟攝影鏡頭進行截圖，存檔於output_images資料夾)
+  webcancut.py (開啟攝影鏡頭進行截圖，存檔於output_images資料夾，按S)
 
 
