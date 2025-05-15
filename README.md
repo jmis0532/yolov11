@@ -12,4 +12,15 @@ YOLOv11n
 
 2.把以下東西拷貝到目錄下
 
+requirements.txt
+
+packages
+
+六支程式
+
+pip install --no-index --find-links=packages -r requirements.txt
+
+pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+
+
 
