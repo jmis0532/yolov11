@@ -8,13 +8,13 @@ YOLOv11n
 
 安裝方式概述：
 
-1.建立正確目錄及資料夾 (請參照目錄圖001)
+1.建立正確目錄及資料夾 (請參照目錄圖001.jpg)
 
-2.把以下東西拷貝到目錄下 (請參照目錄圖001)
+2.把以下東西拷貝到目錄下 (請參照目錄圖001.jpg)
 
 requirements.txt
 
-packages <==打包好的套件包
+packages <==打包好的套件包 下載位置https://drive.google.com/drive/folders/11FA6dMVvL3azhjeAWPuirO85jtni_akS?usp=drive_link
 
 六支.py程式  
 
