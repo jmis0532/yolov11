@@ -3,3 +3,5 @@
 Python 3.9.7
 
 YOLOv11n
+
+其他詳見 requirements.txt
