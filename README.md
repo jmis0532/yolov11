@@ -28,6 +28,8 @@ YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
 ============================================================================================
 
+程式說明：
+
   vedio11-detect.py (開啟本地影像進行偵測，使用YOLOv11n原始模型)
 
   vediobest-detect.py (開啟本地影像進行偵測，使用訓練過後模型)
@@ -41,5 +43,16 @@ YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
   webcancut.py (開啟攝影鏡頭進行截圖，存檔於output_images資料夾，按S)
 
 ============================================================================================
+
+影像檔要放在vedio目錄下
+
+venv001這資料夾是在CMD下，使用python -m venv venv001 建立的虛擬環境，讓套件只用在此venv001環境，不與其他環境衝突。
+
+建立虛擬環境後，記得要啟用虛擬環境才能開始使用程式。
+
+在CMD下	venv001\Scripts\activate.bat
+
+便可執行程式
+
 
 
