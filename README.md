@@ -18,13 +18,13 @@ YOLOv11n
 
 3.把以下東西拷貝到目錄下 (請參照目錄圖001.jpg)
 
-requirements.txt
+(1)requirements.txt
 
-packages <==打包好的套件包 下載位置https://drive.google.com/drive/folders/11FA6dMVvL3azhjeAWPuirO85jtni_akS?usp=drive_link
+(2)packages <==打包好的套件包 下載位置https://drive.google.com/drive/folders/11FA6dMVvL3azhjeAWPuirO85jtni_akS?usp=drive_link
 
-六支.py程式  
+(3)六支.py程式  
 
-YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
+(4)YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
 4.在啟動虛擬環境下，執行安裝指令 pip install --no-index --find-links=packages -r requirements.txt
 
