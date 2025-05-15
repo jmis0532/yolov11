@@ -26,9 +26,9 @@ YOLOv11n
 
 (4)YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
-4.在啟動虛擬環境下，執行安裝指令 pip install --no-index --find-links=packages -r requirements.txt
+4.在啟動虛擬環境下，CMD執行安裝指令 pip install --no-index --find-links=packages -r requirements.txt
 
-5.在啟動虛擬環境下，執行安裝指令 pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+5.在啟動虛擬環境下，CMD執行安裝指令 pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
 
 ============================================
 
