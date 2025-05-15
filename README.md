@@ -20,9 +20,9 @@ packages <==打包好的套件包
 
 YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
-pip install --no-index --find-links=packages -r requirements.txt
+3.執行安裝 pip install --no-index --find-links=packages -r requirements.txt
 
-pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+4.執行安裝 pip install torch==2.1.0+cu118 torchvision==0.16.0+cu118 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
 
 
 
