@@ -14,9 +14,11 @@ YOLOv11n
 
 requirements.txt
 
-packages
+packages <==打包好的套件包
 
-六支程式
+六支程式  
+
+YOLOv11n <== 去官網的GITHUB抓  https://github.com/ultralytics/ultralytics
 
 pip install --no-index --find-links=packages -r requirements.txt
 
