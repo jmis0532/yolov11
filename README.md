@@ -42,6 +42,7 @@ Git Bash/Bash 	source venv002/Scripts/activate
 
 
 ============================================
+
 船艦標註分類代號
 
 空母AC
