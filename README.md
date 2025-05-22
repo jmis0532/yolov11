@@ -80,6 +80,7 @@ YOLOv11n
 安裝方式概述：
 
 1.建立正確目錄及資料夾 (請參照目錄圖001.jpg)
+![目錄長這樣](https://github.com/jmis0532/yolov11/blob/main/%E7%9B%AE%E9%8C%84%E5%9C%96001.jpg)
 
 2.使用python -m venv venv001 建立的虛擬環境，讓套件只用在此venv001環境，不與其他環境衝突。
 
