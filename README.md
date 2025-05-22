@@ -14,6 +14,10 @@
 
 4.按D回到下一幀
 
+![DEMO](https://github.com/jmis0532/yolov11/blob/main/demo01.png)
+![DEMO](https://github.com/jmis0532/yolov11/blob/main/demo02.png)
+![DEMO](https://github.com/jmis0532/yolov11/blob/main/demo03.png)
+
 (二)新增vediocut.py功能(影像截圖工具)
 
 影像截圖工具vediocut.py 
