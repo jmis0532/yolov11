@@ -28,8 +28,23 @@
 
 5.按S存至output_images\png
 
+============================================
+2025/05/22
+
+啟用虛擬環境指令(venv002)
+
+CMD	 venv\Scripts\activate.bat
+
+PowerShell	 .\venv002\Scripts\Activate.ps1
+
+Git Bash/Bash 	source venv002/Scripts/activate
+
 
 ============================================
+
+2025/05/01
+
+(這裡是故事開始...)
 
 由於我使用的是NVIDIA Geforce RTX 3080TI 顯示卡，在所有套件支援的前提下使用以下版本工具
 
