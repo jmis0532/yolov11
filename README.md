@@ -1,5 +1,5 @@
 2025/05/22 
-新增vedio11-detect.py功能
+(一)新增vedio11-detect.py功能(影像偵測工具)
 
 船艦中心藍十字
 
@@ -13,7 +13,7 @@
 
 4.按D回到下一幀
 
-新增vediocut.py功能
+(二)新增vediocut.py功能(影像截圖工具)
 
 影像截圖工具vediocut.py 
 
