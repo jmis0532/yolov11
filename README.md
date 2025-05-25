@@ -1,3 +1,9 @@
+2025/05/25
+
+![DEMO](https://github.com/jmis0532/yolov11/blob/main/PPT.png)
+
+==========================
+
 2025/05/22 
 
 (一)新增vedio11-detect.py功能(影像偵測工具)
