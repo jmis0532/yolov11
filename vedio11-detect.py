@@ -8,10 +8,6 @@
 # 2025/05/31 by Summer
 # 增加攻擊順序:紅色數字1-10 以邊緣軸y2值計算
 
-
-
-
-
 import cv2
 import math
 import supervision as sv
