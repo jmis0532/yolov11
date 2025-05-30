@@ -3,7 +3,7 @@
 新增vedio11-detect.py功能
 顯示攻擊順序#紅色數字
 
-![DEMO](https://github.com/jmis0532/yolov11/blob/main/###攻擊順序.png)
+![DEMO](https://github.com/jmis0532/yolov11/blob/main/attack_sequence.png)
 
 ==========================
 
