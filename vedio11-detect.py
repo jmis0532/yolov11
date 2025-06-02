@@ -7,6 +7,11 @@
 # 4.按D回到下一幀
 # 2025/05/31 by Summer
 # 增加攻擊順序:紅色數字1-10 以邊緣軸y2值計算
+# 2028/06/03 by Summer
+# 修改攻擊順序:
+# 增加權重w1,w2
+# w1為距離底部距離，距離越小數字越大(10~1)
+# w2為WK出現與否，數字固定為3
 
 import cv2
 import math
@@ -51,35 +56,30 @@ current_frame = 0
 last_frame_image = None
 
 def process_frame(frame):
-    input_frame = frame.copy()
-    results = model(frame)[0]
-    detections = sv.Detections.from_ultralytics(results)
+    results = model(frame)
+    detections = sv.Detections.from_ultralytics(results[0])
+    annotated_image = frame.copy()
 
-    annotated_image = bounding_box_annotator.annotate(scene=input_frame, detections=detections)
-    annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
+    screen_height, screen_width = frame.shape[:2]
+    center_x, center_y = screen_width // 2, screen_height // 2
+    cross_length = 10
 
-    h, w, _ = annotated_image.shape
-    center_x, center_y = w // 2, h // 2
+    mm_per_pixel = 0.264583333  # pixel 對應的毫米
 
-    cross_length = 20
-    cv2.line(annotated_image, (center_x - cross_length, center_y),
-        (center_x + cross_length, center_y), (0, 0, 255), 2)
-    cv2.line(annotated_image, (center_x, center_y - cross_length),
-         (center_x, center_y + cross_length), (0, 0, 255), 2)
-
-    # ==== 新增：計算與畫面下緣距離並排序 ====
     bottom_distances = []
     for i, box in enumerate(detections.xyxy):
         x1, y1, x2, y2 = map(int, box)
-        box_center_y = (y1 + y2) // 2
-        dist_to_bottom = h - box_center_y
-        bottom_distances.append((i, dist_to_bottom))
+        bottom_y = max(y1, y2)
+        distance_to_bottom = screen_height - bottom_y
+        bottom_distances.append((i, distance_to_bottom))
 
-    # 按照離底部的距離遞增排序（越靠近底部，dist越小，順序數字越小）
+    # 根據距離畫面底部排序，距離越近越前面，取前10名分配 w1=1~10
     sorted_indices = sorted(bottom_distances, key=lambda x: x[1])
-    index_to_rank = {idx: rank + 1 for rank, (idx, _) in enumerate(sorted_indices[:10])}
+    top10 = sorted_indices[:10]
+    index_to_w1 = {idx: 10 - rank for rank, (idx, _) in enumerate(top10)}
 
-    # ==== 顯示標註與數字 ====
+    w2_weight = 3  # WK加權，固定為3
+
     for i, box in enumerate(detections.xyxy):
         x1, y1, x2, y2 = map(int, box)
         box_center_x = (x1 + x2) // 2
@@ -101,35 +101,39 @@ def process_frame(frame):
         dy = center_y - box_center_y
         angle_rad = math.atan2(dy, dx)
         angle_deg = math.degrees(angle_rad)
-        if angle_deg < 0:
-            angle_deg += 360
+        if angle_deg < 0: angle_deg += 360
 
         mid_x = (center_x + box_center_x) // 2
         mid_y = (center_y + box_center_y) // 2
 
-        # 加上排序數字
-        rank_num = index_to_rank.get(i, None)
-        distance_text = f"{mm_distance:.1f} M"
-        if rank_num is not None:
-            distance_text += f" #{rank_num}"
+        # 權重 w1: 根據底部距離
+        w1 = index_to_w1.get(i, 0)
 
-        if rank_num is not None:
-        # 分離距離與順序數字
-            distance_only = f"{mm_distance:.1f} M"
-            cv2.putText(annotated_image, distance_only, (mid_x + 5, mid_y - 5),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
-            cv2.putText(annotated_image, f"#{rank_num}", (mid_x + 5 + 80, mid_y - 5),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)  # 紅色
-            cv2.putText(annotated_image, f"{angle_deg:.1f}deg", (mid_x + 5, mid_y + 15),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (160, 160, 160), 1)
-        else:
-            cv2.putText(annotated_image, distance_text, (mid_x + 5, mid_y - 5),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
-            cv2.putText(annotated_image, f"{angle_deg:.1f}deg", (mid_x + 5, mid_y + 15),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (160, 160, 160), 1)
+        # 權重 w2: WK出現與否 
+        class_id = int(detections.class_id[i])
+        class_name = model.names[class_id]
+        w2 = w2_weight if class_name == "WK" else 0
 
-        cv2.putText(annotated_image, f"Frame: {current_frame}/{total_frames}",
-                (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 1)
+        total_score = w1 + w2
+
+        # 顯示距離與角度
+        cv2.putText(annotated_image, f"{mm_distance:.1f}M", (mid_x + 5, mid_y - 20),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
+        cv2.putText(annotated_image, f"{angle_deg:.1f}deg", (mid_x + 5, mid_y - 5),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (160, 160, 160), 1)
+
+        # 顯示 w1、w2 與總分
+        cv2.putText(annotated_image, f"W1:{w1} W2:{w2} W:{total_score}", (mid_x + 5, mid_y + 15),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+        
+        annotated_image = bounding_box_annotator.annotate(scene=annotated_image, detections=detections)
+        annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
+
+        print(f"偵測到 {len(detections)} 個物件")
+
+        # 畫出目前幀數
+        cv2.putText(annotated_image, f"Frame: {current_frame} / {total_frames}", (10, 20),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255),1)
 
     return annotated_image
 
