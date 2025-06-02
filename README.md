@@ -1,10 +1,15 @@
 2025/06/03
 
 2028/06/03 by Summer
+
 修改攻擊順序:
+
 增加權重w1,w2
+
 w1為距離底部距離，距離越小數字越大(10~1)
+
 w2為WK出現與否，數字固定為3
+
 
 ![DEMO](https://github.com/jmis0532/yolov11/blob/main/W123.png)
 
