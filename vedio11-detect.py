@@ -5,6 +5,13 @@
 # 2.按Q回到第一幀
 # 3.按A回到上一幀
 # 4.按D回到下一幀
+# 2025/05/31 by Summer
+# 增加攻擊順序:紅色數字1-10 以邊緣軸y2值計算
+# 2028/06/03 by Summer
+# 修改攻擊順序:
+# 增加權重w1,w2
+# w1為距離底部距離，距離越小數字越大(10~1)
+# w2為WK出現與否，數字固定為3
 
 import cv2
 import math
@@ -26,7 +33,7 @@ if not video_path:
     print("未選擇影片，結束程式")
     exit()
 
-model = YOLO('yolo11n.pt')
+model = YOLO('best.pt')
 
 bounding_box_annotator = sv.BoundingBoxAnnotator()
 label_annotator = sv.LabelAnnotator()
@@ -45,26 +52,32 @@ total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 paused = False
 step_frame = False
-
 current_frame = 0
 last_frame_image = None
 
 def process_frame(frame):
-    input_frame = cv2.resize(frame, (640, 640))
-    results = model(input_frame)[0]
-    detections = sv.Detections.from_ultralytics(results)
+    results = model(frame)
+    detections = sv.Detections.from_ultralytics(results[0])
+    annotated_image = frame.copy()
 
-    annotated_image = bounding_box_annotator.annotate(scene=input_frame, detections=detections)
-    annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
+    screen_height, screen_width = frame.shape[:2]
+    center_x, center_y = screen_width // 2, screen_height // 2
+    cross_length = 40
 
-    h, w, _ = annotated_image.shape
-    center_x, center_y = w // 2, h // 2
+    
+    bottom_distances = []
+    for i, box in enumerate(detections.xyxy):
+        x1, y1, x2, y2 = map(int, box)
+        bottom_y = max(y1, y2)
+        distance_to_bottom = screen_height - bottom_y
+        bottom_distances.append((i, distance_to_bottom))
 
-    cross_length = 20
-    cv2.line(annotated_image, (center_x - cross_length, center_y),
-        (center_x + cross_length, center_y), (0, 0, 255), 2)
-    cv2.line(annotated_image, (center_x, center_y - cross_length),
-         (center_x, center_y + cross_length), (0, 0, 255), 2)
+    # 根據距離畫面底部排序，距離越近越前面，取前10名分配 w1=1~10
+    sorted_indices = sorted(bottom_distances, key=lambda x: x[1])
+    top10 = sorted_indices[:10]
+    index_to_w1 = {idx: 10 - rank for rank, (idx, _) in enumerate(top10)}
+
+    w2_weight = 3  # WK加權，固定為3
 
     for i, box in enumerate(detections.xyxy):
         x1, y1, x2, y2 = map(int, box)
@@ -73,13 +86,12 @@ def process_frame(frame):
 
         cv2.line(annotated_image, (center_x, center_y), (box_center_x, box_center_y), (0, 125, 0), 2)
 
-        cross_length = 20
-        color = (253, 73, 7)
-        thickness = 2
+        color = (253, 73, 1)
+        thickness = 1
         cv2.line(annotated_image, (box_center_x - cross_length, box_center_y),
-        (box_center_x + cross_length, box_center_y), color, thickness)
+                 (box_center_x + cross_length, box_center_y), color, thickness)
         cv2.line(annotated_image, (box_center_x, box_center_y - cross_length),
-         (box_center_x, box_center_y + cross_length), color, thickness)
+                 (box_center_x, box_center_y + cross_length), color, thickness)
 
         pixel_distance = math.hypot(box_center_x - center_x, box_center_y - center_y)
         mm_distance = pixel_distance * mm_per_pixel
@@ -88,26 +100,47 @@ def process_frame(frame):
         dy = center_y - box_center_y
         angle_rad = math.atan2(dy, dx)
         angle_deg = math.degrees(angle_rad)
-        if angle_deg < 0:
-            angle_deg += 360
+        if angle_deg < 0: angle_deg += 360
 
         mid_x = (center_x + box_center_x) // 2
         mid_y = (center_y + box_center_y) // 2
-        cv2.putText(annotated_image, f"{mm_distance:.1f} mm", (mid_x + 5, mid_y - 5),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 2)
-        cv2.putText(annotated_image, f"{angle_deg:.1f}deg", (mid_x + 5, mid_y + 15),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (160, 160, 160), 2)
 
-    cv2.putText(annotated_image, f"Frame: {current_frame}/{total_frames}",
-                (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (192, 192, 192), 2)
+        # 權重 w1: 根據底部距離
+        w1 = index_to_w1.get(i, 0)
+
+        # 權重 w2: WK出現與否 
+        class_id = int(detections.class_id[i])
+        class_name = model.names[class_id]
+        w2 = w2_weight if class_name == "WK" else 0
+
+        total_score = w1 + w2
+
+        # 顯示距離與角度
+        cv2.putText(annotated_image, f"{mm_distance:.1f}M", (mid_x + 5, mid_y - 20),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
+        cv2.putText(annotated_image, f"{angle_deg:.1f}deg", (mid_x + 5, mid_y - 5),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (160, 160, 160), 1)
+
+        # 顯示 w1、w2 與總分
+        cv2.putText(annotated_image, f"W1:{w1} W2:{w2} W:{total_score}", (mid_x + 5, mid_y + 15),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+          
+
+                # 畫出目前幀數
+        cv2.putText(annotated_image, f"Frame: {current_frame} / {total_frames}", (10, 20),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255),1)
+        
+    annotated_image = bounding_box_annotator.annotate(scene=annotated_image, detections=detections)
+    annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
+
+    cv2.line(annotated_image, (center_x - cross_length, center_y),(center_x + cross_length, center_y), (0, 0, 255), 1)
+    cv2.line(annotated_image, (center_x, center_y - cross_length),(center_x, center_y + cross_length), (0, 0, 255), 1)
 
     return annotated_image
 
 def goto_frame(cap, frame_number):
-    """重新開啟影片並跳到指定幀"""
     cap.release()
     cap = open_video(video_path)
-    # 設定幀位置
     cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
     ret, frame = cap.read()
     if not ret:
@@ -129,7 +162,6 @@ while True:
             continue
 
         current_frame += 1
-
         annotated_image = process_frame(frame)
         cv2.imshow('YOLO Video Detection', annotated_image)
         last_frame_image = annotated_image.copy()
@@ -145,7 +177,7 @@ while True:
         paused = not paused
         print("== 暫停播放 ==" if paused else "== 繼續播放 ==")
     elif paused:
-        if k == ord('a') or k == ord('A'):  # 回上一幀
+        if k == ord('a') or k == ord('A'):
             target_frame = max(0, current_frame - 2)
             cap, frame = goto_frame(cap, target_frame)
             if frame is not None:
@@ -154,7 +186,7 @@ while True:
                 cv2.imshow('YOLO Video Detection', annotated_image)
                 last_frame_image = annotated_image.copy()
                 print(f"== 回上一幀: {current_frame} ==")
-        elif k == ord('d') or k == ord('D'):  # 下一幀
+        elif k == ord('d') or k == ord('D'):
             ret, frame = cap.read()
             if ret:
                 current_frame += 1
@@ -164,7 +196,7 @@ while True:
                 print(f"== 下一幀: {current_frame} ==")
             else:
                 print("已到影片末尾")
-        elif k == ord('q') or k == ord('Q'):  # Q 回到第一幀
+        elif k == ord('q') or k == ord('Q'):
             cap, frame = goto_frame(cap, 0)
             if frame is not None:
                 current_frame = 1
@@ -175,4 +207,3 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-
