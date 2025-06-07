@@ -1,3 +1,21 @@
+2025/06/07
+
+移植Jetson orin NX成功，將幾個步驟寫成.py，以便以後使用
+
+位置在For_ubuntu資料夾內
+
+1.detect.py 偵測(正式時使用，用影片偵測)
+
+2.webcan.py 偵測(正式時使用，用攝像頭偵測
+
+3.onnxtoengine.py onnx轉engine
+
+4.pttoonnx.py pytorh(.pt)轉onnx
+
+5.videotest.py 只是測試攝像頭
+
+==========================
+
 2025/06/03
 
 2028/06/03 by Summer
