@@ -14,6 +14,10 @@
 
 5.videotest.py 只是測試攝像頭
 
+移植Jetson orin NX成功
+
+影片位置: https://www.youtube.com/watch?v=2jZ4SvMqsbk
+
 ==========================
 
 2025/06/03
