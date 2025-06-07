@@ -2,7 +2,7 @@
 
 移植Jetson orin NX成功，將幾個步驟寫成.py，以便以後使用
 
-位置在For_ubuntu資料夾內
+位置在For_ubuntu資料夾內(在板子上使用)
 
 1.detect.py 偵測(正式時使用，用影片偵測)
 
