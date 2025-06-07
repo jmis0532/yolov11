@@ -6,7 +6,7 @@
 
 1.detect.py 偵測(正式時使用，用影片偵測)
 
-2.webcan.py 偵測(正式時使用，用攝像頭偵測
+2.webcan.py 偵測(正式時使用，用攝像頭偵測)
 
 3.onnxtoengine.py onnx轉engine
 
