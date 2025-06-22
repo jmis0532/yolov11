@@ -1,5 +1,7 @@
 2025/06/22
 
+以YOLOv11x自動標註
+
 add autolable_f1.py  自動標註程式，留標註框外背景原圖
 
 add autolable_f2.py  自動標註程式，標註框外背景遮蔽
