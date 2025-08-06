@@ -1,3 +1,9 @@
+2025/08/06
+
+add pickPNG.py 將資料夾下所有PNG，選擇5倍數編號複製
+
+add resize.py  將資料夾下所有PNG，等比縮放+透明填充，改為像素尺寸640X640
+
 2025/07/13
 
 add makeAVI.py 將資料夾下所有PNG壓為AVI，可選擇壓縮格式&FPS
